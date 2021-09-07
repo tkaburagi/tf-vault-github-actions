@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Import TFC API Token from Vault
+        id: tfc_secrets
         uses: hashicorp/vault-action@v2.3.1
         with:
           url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
@@ -17,7 +18,6 @@ jobs:
           namespace: admin
           secrets: |
             tfc/creds/ci-user token | TFC_TOKEN ;
-            tfc/creds/ci-user ..lease_id | TFC_TOKEN_LEASE_ID ;
       - name: Terraform Test
         run: |
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -29,6 +29,7 @@ jobs:
           terraform init
           terraform validate
       - name: Import Azure Secrets from Vault
+        id: azure_secrets
         uses: hashicorp/vault-action@v2.3.1
         with:
           url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
@@ -38,7 +39,6 @@ jobs:
           secrets: |
             azure/creds/contributor client_id | ARM_CLIENT_ID ;
             azure/creds/contributor client_secret | ARM_CLIENT_SECRET ;
-            azure/creds/contributor lease_id | AZURE_LEASE_ID ;
             secret/data/azure/environment subscription_id | ARM_SUBSCRIPTION_ID;
             secret/data/azure/environment tenant_id | ARM_TENANT_ID ;
       - name: Set TFC Environmet Variables
@@ -96,11 +96,15 @@ jobs:
       - name: Cleanup Environmet
         env:
           VTOKEN: ${{secrets.VAULT_TOKEN}}
+          AZURE_SECRETS_JSON: "${{ toJson(steps.azure_secrets.outputs) }}"
+          TFC_SECRETS_JSON: "${{ toJson(steps.tfc__secrets.outputs) }}" 
         run: |
           sudo apt install -y vault
           export VAULT_ADDR="https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200"
           export VAULT_TOKEN=${VTOKEN}
           export VAULT_NAMESPACE=admin
+          export AZURE_TOKEN_LEASE_ID=echo ${AZURE_SECRETS_JSON} | jq -r '.lease_id'
+          export TFC_TOKEN_LEASE_ID=echo ${TFC_SECRETS_JSON} | jq -r '.lease_id'
           vault lease lookup ${TFC_TOKEN_LEASE_ID}
           vailt lease lookup ${AZURE_LEASE_ID}
           vault lease revoke ${TFC_TOKEN_LEASE_ID}
