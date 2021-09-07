@@ -1,4 +1,4 @@
-name: CI
+name: ci-main
 on:
   push:
     branches: [ main ]
@@ -16,8 +16,6 @@ jobs:
           terraform -version
           ls -ltr
           terraform fmt -recursive -check
-          terraform init
-          terraform validate
   import-secrets:
     runs-on: ubuntu-latest
     steps:
