@@ -4,7 +4,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  tf-test:
+  tfc-azure-provisioning:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -75,7 +75,7 @@ jobs:
 
           cat main.tf
           ls -ltrR
-          tar -zcvf tf.tar.gz -C . main.tf output.tf variables.tf
+          tar -zcvf tf.tar.gz -C . main.tf output.tf variables.tf azure.tf
           echo '{"data":{"type":"configuration-version"}}' > ./create_config_version.json
           UPLOAD_URL=($(curl \
             --header "Authorization: Bearer ${TFC_TOKEN}" \
@@ -91,13 +91,14 @@ jobs:
             $UPLOAD_URL
           rm ./create_config_version.json
           rm ./tf.tar.gz
-      - name: Cleanup Environmet
-        run: |
-          cd tf-tfc
-          ls -ltr
-          export TFE_TOKEN=${TFC_TOKEN}
-          export TF_VAR_arm_client_id=${ARM_CLIENT_ID}
-          export TF_VAR_arm_client_secret=${ARM_CLIENT_SECRET}
-          export TF_VAR_arm_tenant_id=${ARM_TENANT_ID}
-          export TF_VAR_arm_sub_id=${ARM_SUBSCRIPTION_ID}
-          terraform destroy -auto-approve
+      # - name: Cleanup Environmet
+      #   run: |
+      #     cd tf-tfc
+      #     ls -ltr
+      #     export TF_VAR_workspace_id=${WS_ID}
+      #     export TFE_TOKEN=${TFC_TOKEN}
+      #     export TF_VAR_arm_client_id=${ARM_CLIENT_ID}
+      #     export TF_VAR_arm_client_secret=${ARM_CLIENT_SECRET}
+      #     export TF_VAR_arm_tenant_id=${ARM_TENANT_ID}
+      #     export TF_VAR_arm_sub_id=${ARM_SUBSCRIPTION_ID}
+      #     terraform destroy -auto-approve
