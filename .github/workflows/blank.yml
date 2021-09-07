@@ -15,7 +15,9 @@ jobs:
           sudo apt install -y terraform
           terraform -version
           ls -ltr
+          terraform fmt -diff=true
           terraform init
+          terraform validate
   # import-secrets:
   #   runs-on: ubuntu-latest
   #   steps:
