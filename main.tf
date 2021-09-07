@@ -1,3 +1,13 @@
+terraform {
+  backend "remote" {
+    organization = "tkaburagi"
+
+    workspaces {
+      name = "azure-vault-gh-actions"
+    }
+  }
+}
+
 provider "azurerm" {
     features {}
 }

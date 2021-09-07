@@ -18,7 +18,7 @@ jobs:
           terraform fmt -diff=true
           terraform init
           terraform validate
-      - name: Import Secrets
+      - name: Import Azure Secrets from Vault
         uses: hashicorp/vault-action@v2.3.1
         with:
           url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
@@ -30,6 +30,23 @@ jobs:
             azure/creds/contributor client_secret | ARM_CLIENT_SECRET ;
             secret/data/azure/environment subscription_id | ARM_SUBSCRIPTION_ID;
             secret/data/azure/environment tenant_id | ARM_TENANT_ID ;
-      - name: Terraform Plan
+      - name: Import TFC API Token from Vault
+        uses: hashicorp/vault-action@v2.3.1
+        with:
+          url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
+          token: ${{ secrets.VAULT_TOKEN }}
+          exportToken: ${{ secrets.VAULT_TOKEN }}
+          namespace: admin
+          secrets: |
+            tfc/creds/ci-team | TFC_TOKEN ;
+      - name: Set TFC Environmet Variables
         run: |
-          terraform plan
+          cd tf-tfc
+          terraform init
+          export TFE_TOKEN=${TFC_TOKEN}
+          export TF_VAR_arm_client_id=${ARM_CLIENT_ID}
+          export TF_VAR_arm_client_secret=${ARM_CLIENT_SECRET}
+          export TF_VAR_arm_tenant_id=${ARM_TENANT_ID}
+          export TF_VAR_arm_sub_id=${ARM_SUBSCRIPTION_ID}
+          terraform apply -auto-approve
+          
