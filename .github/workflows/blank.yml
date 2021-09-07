@@ -50,4 +50,28 @@ jobs:
           export TF_VAR_arm_tenant_id=${ARM_TENANT_ID}
           export TF_VAR_arm_sub_id=${ARM_SUBSCRIPTION_ID}
           terraform apply -auto-approve
+      - name: Make TFC
+        run: |
+          cat << EOF > main.tf
+          terraform {
+            backend "remote" {
+              organization = "tkaburagi"
+
+              workspaces {
+                name = "azure-vault-gh-actions"
+              }
+            }
+          }
+
+          provider "azurerm" {
+              features {}
+          }
+          EOF
+
+          cat main.tf
+      - name: Cleanup Environmet
+        run: |
+          cd tf-tfc
+          ls -ltr
+          terraform destroy -auto-approve
           
