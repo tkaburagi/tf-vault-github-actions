@@ -4,7 +4,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  tf-test:
+  tf-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,17 +18,17 @@ jobs:
           terraform fmt -diff=true
           terraform init
           terraform validate
-  # import-secrets:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Import Secrets
-  #       uses: hashicorp/vault-action@v2.3.1
-  #       with:
-  #         url: https:// vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
-  #         token: ${{ secrets.VaultToken }}
-  #         namespace: 
-  #         caCertificate: ${{ secrets.VAULTCA }}
-  #         secrets: |
-  #           secret/data/ci/aws accessKey | AWS_ACCESS_KEY_ID ;
-  #           secret/data/ci/aws secretKey | AWS_SECRET_ACCESS_KEY ;
-  #           secret/data/ci npm_token
+  import-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2.3.1
+        with:
+          url: https:// vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
+          token: ${{ secrets.VAULT_TOKEN }}
+          namespace: 
+          secrets: |
+            azure/creds/contributor client_id | ARM_CLIENT_ID ;
+            azure/creds/contributor client_secret | ARM_CLIENT_SECRET ;
+            secret/data/azure/environment subscription_id | ARM_SUBSCRIPTION_ID;
+            secret/data/azure/environment tenant_id | ARM_TENANT_ID ;
