@@ -18,8 +18,8 @@ jobs:
           terraform fmt -diff=true
           terraform init
           terraform validate
-      - uses: hashicorp/vault-action@v2.3.1
-      - name: Import Secrets from Vault
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2.3.1
         with:
           url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
           token: ${{ secrets.VAULT_TOKEN }}
@@ -32,5 +32,4 @@ jobs:
             secret/data/azure/environment tenant_id | ARM_TENANT_ID ;
       - name: Terraform Plan
         run: |
-          ls -ltr
           terraform plan
