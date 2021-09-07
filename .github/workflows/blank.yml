@@ -106,9 +106,11 @@ jobs:
           export VAULT_NAMESPACE=admin
           export AZURE_TOKEN_LEASE_ID=$(echo ${AZURE_SECRETS_JSON} | jq -r '.lease_id')
           export TFC_TOKEN_LEASE_ID=$(echo ${TFC_SECRETS_JSON} | jq -r '.lease_id')
+          echo ${AZURE_TOKEN_LEASE_ID}
+          echo ${TFC_TOKEN_LEASE_ID}
           vault lease lookup ${TFC_TOKEN_LEASE_ID}
-          vailt lease lookup ${AZURE_LEASE_ID}
+          vailt lease lookup ${AZURE_TOKEN_LEASE_ID}
           vault lease revoke ${TFC_TOKEN_LEASE_ID}
-          vault lease revoke ${AZURE_LEASE_ID}
+          vault lease revoke ${AZURE_TOKEN_LEASE_ID}
           vault lease lookup ${TFC_TOKEN_LEASE_ID}
-          vailt lease lookup ${AZURE_LEASE_ID}
+          vailt lease lookup ${AZURE_TOKEN_LEASE_ID}
