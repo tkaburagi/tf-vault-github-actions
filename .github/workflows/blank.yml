@@ -17,7 +17,7 @@ jobs:
           namespace: admin
           secrets: |
             tfc/creds/ci-user token | TFC_TOKEN ;
-            tfc/creds/ci-user '.lease_id' | TFC_TOKEN_LEASE_ID ;
+            tfc/creds/ci-user ..lease_id | TFC_TOKEN_LEASE_ID ;
       - name: Terraform Test
         run: |
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
