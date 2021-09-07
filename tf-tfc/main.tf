@@ -1,0 +1,40 @@
+provider "tfe" {
+  hostname = "app.terraform.io"
+}
+
+// TODO: Set valut, Set var
+variable "workspace_id" {
+  default = "ws-LbX7FCFrLPbYV5Vn"
+}
+variable "arm_client_id" {}
+variable "arm_client_secret" {}
+variable "arm_tenant_id" {}
+variable "arm_sub_id" {}
+
+resource "tfe_variable" "arm_client_id" {
+  key          = "ARM_CLIENT_ID"
+  value        = "my_value_name"
+  category     = "env"
+  workspace_id = var.workspace_id
+}
+
+resource "tfe_variable" "arm_client_secret" {
+  key          = "ARM_CLIENT_SECRET"
+  value        = "my_value_name"
+  category     = "env"
+  workspace_id = var.workspace_id
+}
+
+resource "tfe_variable" "arm_tenant_id" {
+  key          = "ARM_TENANT_ID"
+  value        = "my_value_name"
+  category     = "env"
+  workspace_id = var.workspace_id
+}
+
+resource "tfe_variable" "arm_sub_id" {
+  key          = "ARM_SUBSCRIPTION_ID"
+  value        = "my_value_name"
+  category     = "env"
+  workspace_id = var.workspace_id
+}
