@@ -4,7 +4,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  tf-test
+  tf-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
