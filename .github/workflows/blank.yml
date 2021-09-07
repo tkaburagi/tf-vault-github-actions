@@ -42,6 +42,8 @@ jobs:
       - name: Set TFC Environmet Variables
         run: |
           cd tf-tfc
+          ls -ltr
+          terraform init
           export TFE_TOKEN=${TFC_TOKEN}
           export TF_VAR_arm_client_id=${ARM_CLIENT_ID}
           export TF_VAR_arm_client_secret=${ARM_CLIENT_SECRET}
