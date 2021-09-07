@@ -40,17 +40,22 @@ jobs:
             secret/data/azure/environment subscription_id | ARM_SUBSCRIPTION_ID;
             secret/data/azure/environment tenant_id | ARM_TENANT_ID ;
       - name: Set TFC Environmet Variables
+        env:
+          WS_ID: ${{secrets.WS_ID}} 
         run: |
           cd tf-tfc
           ls -ltr
           terraform init
           export TFE_TOKEN=${TFC_TOKEN}
+          export TF_VAR_workspace_id=${WS_ID}
           export TF_VAR_arm_client_id=${ARM_CLIENT_ID}
           export TF_VAR_arm_client_secret=${ARM_CLIENT_SECRET}
           export TF_VAR_arm_tenant_id=${ARM_TENANT_ID}
           export TF_VAR_arm_sub_id=${ARM_SUBSCRIPTION_ID}
           terraform apply -auto-approve
       - name: Make TFC
+        env:
+          WS_ID: ${{secrets.WS_ID}} 
         run: |
           cat << EOF > main.tf
           terraform {
@@ -69,6 +74,23 @@ jobs:
           EOF
 
           cat main.tf
+          ls -ltrR
+          tar -zcvf tf.tar.gz -C . main.tf output.tf variables.tf
+          echo '{"data":{"type":"configuration-version"}}' > ./create_config_version.json
+          UPLOAD_URL=($(curl \
+            --header "Authorization: Bearer ${TFC_TOKEN}" \
+            --header "Content-Type: application/vnd.api+json" \
+            --request POST \
+            --data @create_config_version.json \
+            https://app.terraform.io/api/v2/workspaces/${WS_ID}/configuration-versions \
+            | jq -r '.data.attributes."upload-url"'))
+          curl \
+            --header "Content-Type: application/octet-stream" \
+            --request PUT \
+            --data-binary @tf.tar.gz \
+            $UPLOAD_URL
+          rm ./create_config_version.json
+          rm ./tf.tar.gz
       - name: Cleanup Environmet
         run: |
           cd tf-tfc
