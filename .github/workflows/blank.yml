@@ -26,6 +26,7 @@ jobs:
         with:
           url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
           token: ${{ secrets.VAULT_TOKEN }}
+          exportToken: ${{ secrets.VAULT_TOKEN }}
           namespace: 
           secrets: |
             azure/creds/contributor client_id | ARM_CLIENT_ID ;
