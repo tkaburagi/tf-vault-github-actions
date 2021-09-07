@@ -73,5 +73,9 @@ jobs:
         run: |
           cd tf-tfc
           ls -ltr
+          export TFE_TOKEN=${TFC_TOKEN}
+          export TF_VAR_arm_client_id=${ARM_CLIENT_ID}
+          export TF_VAR_arm_client_secret=${ARM_CLIENT_SECRET}
+          export TF_VAR_arm_tenant_id=${ARM_TENANT_ID}
+          export TF_VAR_arm_sub_id=${ARM_SUBSCRIPTION_ID}
           terraform destroy -auto-approve
-          
