@@ -99,6 +99,7 @@ jobs:
           AZURE_SECRETS_JSON: "${{ toJson(steps.azure_secrets.outputs) }}"
           TFC_SECRETS_JSON: "${{ toJson(steps.tfc_secrets.outputs) }}" 
         run: |
+          echo ${AZURE_SECRETS_JSON}
           sudo apt install -y vault
           vault -version
           export VAULT_ADDR="https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200"
