@@ -22,12 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Import Secrets
-        env:
-          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
         uses: hashicorp/vault-action@v2.3.1
         with:
           url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
-          token: $VAULT_TOKEN
+          token: ${{ secrets.VAULT_TOKEN }}
           namespace: 
           secrets: |
             azure/creds/contributor client_id | ARM_CLIENT_ID ;
