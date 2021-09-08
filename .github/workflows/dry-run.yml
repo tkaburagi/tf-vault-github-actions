@@ -58,7 +58,9 @@ jobs:
       - name: Make TFC
         env:
           WS_ID: ${{secrets.WS_ID}}
-          COMMENT: ${{github.event.comment.body}}
+          COMMENT: ${{github.event.inputs.comment}}
+          BRANCH: ${{github.ref}}
+          COMMIT_SHA: ${{github.sha}}
         run: |
           cat << EOF > main.tf
           terraform {
@@ -99,7 +101,7 @@ jobs:
           {
             "data": {
               "attributes": {
-                "message": "Specurative Plan - ${COMMENT}"
+                "message": "Specurative Plan - ${BRANCH}:${COMMIT_SHA}:${COMMENT}"
               },
               "type":"runs",
               "relationships": {
