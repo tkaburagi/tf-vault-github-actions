@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  specurative-plang:
+  specurative-plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -57,7 +57,8 @@ jobs:
           terraform apply -auto-approve
       - name: Make TFC
         env:
-          WS_ID: ${{secrets.WS_ID}} 
+          WS_ID: ${{secrets.WS_ID}}
+          COMMENT: ${{github.event.comment.body}}
         run: |
           cat << EOF > main.tf
           terraform {
@@ -98,7 +99,7 @@ jobs:
           {
             "data": {
               "attributes": {
-                "message": "Specurative Plan - ${{ github.event.comment.body }}"
+                "message": "Specurative Plan - ${COMMENT}"
               },
               "type":"runs",
               "relationships": {
