@@ -1,1 +1,1 @@
-![](pic.ong)
+![](pic.png)
