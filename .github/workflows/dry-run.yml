@@ -98,7 +98,7 @@ jobs:
           {
             "data": {
               "attributes": {
-                "message": "Specurative Plan"
+                "message": "Specurative Plan - ${{ github.event.comment.body }}"
               },
               "type":"runs",
               "relationships": {
