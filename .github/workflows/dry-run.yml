@@ -84,7 +84,6 @@ jobs:
             --request POST \
             --data @create_config_version.json \
             https://app.terraform.io/api/v2/workspaces/${WS_ID}/configuration-versions > output.json
-          cat output.json          
           export UPLOAD_URL=$(cat output.json | jq -r '.data.attributes."upload-url"')
           export CV_ID=$(cat output.json | jq -r '.data."id"')
           curl \
@@ -125,7 +124,7 @@ jobs:
             --header "Content-Type: application/vnd.api+json" \
             --request POST \
             --data @payload.json \
-            https://app.terraform.io/api/v2/runs
+            https://app.terraform.io/api/v2/runs | jq
       - name: Cleanup Environmet
         run: |
           whoami
