@@ -97,6 +97,8 @@ jobs:
           rm ./create_config_version.json
           rm ./tf.tar.gz
 
+          echo ${COMMIT_SHA}
+
           export COMMIT_SHA_SHORT=$(echo ${COMMIT_SHA} | cut -c 1-8)
 
           cat << EOF > payload.json
