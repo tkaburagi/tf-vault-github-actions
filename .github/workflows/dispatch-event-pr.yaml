@@ -3,7 +3,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  dispatch-event-pr:
     runs-on: ubuntu-latest
     steps:
     - name: Create GitHub dispatch event
