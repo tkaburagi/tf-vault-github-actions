@@ -1,0 +1,20 @@
+name: dispatch-apply-workflow
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create GitHub dispatch event
+      env:
+        WS_ID: ${{secrets.MY_GITHUB_ACCESS_TOKEN}} 
+      run: |
+        curl --request POST 'https://api.github.com/repos/tkaburagi/tf-vault-github-actions-workflow/dispatches' \
+        --header 'Authorization: Bearer ${{secrets.MY_GITHUB_ACCESS_TOKEN}}' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "event_type": "repository-src-updated"
+        }'
