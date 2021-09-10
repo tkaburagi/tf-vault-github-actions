@@ -1,5 +1,8 @@
 ![](pic.png)
 
+HCL Repo: https://github.com/tkaburagi/tf-vault-github-actions-src
+Workflow Repo: https://github.com/tkaburagi/tf-vault-github-actions-workflow
+
 ## preparation
 
 ### Vault Setup
@@ -21,7 +24,7 @@ vault policy write azure-read policy.hcl
 vault token create -policy azure-read -orphan
 ```
 
-### GitHub Setup
+### GitHub Setup (Workflow Repo)
 ```
 curl \
   --header "Authorization: Bearer $TOKEN" \
