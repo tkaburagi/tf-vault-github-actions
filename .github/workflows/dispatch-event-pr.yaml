@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Create GitHub dispatch event
-        env:
+      env:
         WS_ID: ${{secrets.MY_GITHUB_ACCESS_TOKEN}} 
       run: |
         curl --request POST 'https://api.github.com/repos/tkaburagi/tf-vault-github-actions-workflow/dispatches' \
