@@ -1,7 +1,7 @@
 ![](pic.png)
 
-HCL Repo: https://github.com/tkaburagi/tf-vault-github-actions-src
-Workflow Repo: https://github.com/tkaburagi/tf-vault-github-actions-workflow
+* HCL Repo: https://github.com/tkaburagi/tf-vault-github-actions-src
+* Workflow Repo: https://github.com/tkaburagi/tf-vault-github-actions-workflow
 
 ## preparation
 
