@@ -6,12 +6,20 @@ jobs:
   dispatch-event-push:
     runs-on: ubuntu-latest
     steps:
+    - name: Import Github  Secrets from Vault
+      id: github_secret
+      uses: hashicorp/vault-action@v2.3.1
+      with:
+        url: https://vault-cluster.vault.fb180883-fc88-4186-a68d-22878810dae2.aws.hashicorp.cloud:8200
+        token: ${{ secrets.VAULT_TOKEN }}
+        exportToken: ${{ secrets.VAULT_TOKEN }}
+        namespace: admin
+        secrets: |
+          secret/data/github access_token | MY_GITHUB_ACCESS_TOKEN;
     - name: Create GitHub dispatch event
-      env:
-        WS_ID: ${{secrets.MY_GITHUB_ACCESS_TOKEN}} 
       run: |
         curl --request POST 'https://api.github.com/repos/tkaburagi/tf-vault-github-actions-workflow/dispatches' \
-        --header 'Authorization: Bearer ${{secrets.MY_GITHUB_ACCESS_TOKEN}}' \
+        --header 'Authorization: Bearer ${MY_GITHUB_ACCESS_TOKEN}' \
         --header 'Content-Type: application/json' \
         --data-raw '{
           "event_type": "repository-src-updated"
