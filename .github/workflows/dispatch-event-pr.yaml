@@ -20,8 +20,8 @@ jobs:
       run: |
         curl --request POST 'https://api.github.com/repos/tkaburagi/tf-vault-github-actions-workflow/dispatches' \
         --header "Authorization: token ${MY_GITHUB_ACCESS_TOKEN}" \
-        --header "Accept: application/vnd.github.everest-preview+json"" \
-        --header "Content-Type: application/json"
+        --header "Accept: application/vnd.github.everest-preview+json" \
+        --header "Content-Type: application/json" \
         --data-raw '{
           "event_type": "repository-src-pr"
         }'
