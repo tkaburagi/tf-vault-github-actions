@@ -7,7 +7,7 @@ resource "azurerm_virtual_machine" "main" {
   vm_size               = "Standard_DS1_v2"
 
   os_profile {
-    computer_name  = "hostname"
+    computer_name  = "kabu-computer"
     admin_username = "vmadmin"
     admin_password = var.admin_password
   }
